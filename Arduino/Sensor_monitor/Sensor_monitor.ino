@@ -1,6 +1,6 @@
+#include <Adafruit_TCS34725.h>
+#include <RF24.h>
 #include <Wire.h>
-#include "Adafruit_TCS34725.h"
-#include "RF24.h"
 
 #define RED 9
 #define GREEN 10
@@ -14,14 +14,13 @@
 int valueR, valueG, valueB;
 
 // Initialise with specific int time and gain values
-Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_614MS, TCS34725_GAIN_1X);
+Adafruit_TCS34725 tcs =
+    Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_614MS, TCS34725_GAIN_1X);
 const int interruptPin = 2;
 volatile boolean state = false;
 
-//Interrupt Service Routine
-void isr() {
-  state = true;
-}
+// Interrupt Service Routine
+void isr() { state = true; }
 
 /* tcs.getRawData() does a delay(Integration_Time) after the sensor readout.
 We don't need to wait for the next integration cycle
@@ -38,7 +37,8 @@ void setup(void) {
   valueG = 0;
   valueB = 0;
 
-  pinMode(interruptPin, INPUT_PULLUP);  //TCS interrupt output is Active-LOW and Open-Drain
+  pinMode(interruptPin,
+          INPUT_PULLUP); // TCS interrupt output is Active-LOW and Open-Drain
   attachInterrupt(digitalPinToInterrupt(interruptPin), isr, FALLING);
 
   Serial.begin(9600);
@@ -81,21 +81,24 @@ void loop(void) {
 
   if (valueR > (r == 0 ? 0 : map(r, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX))) {
     valueR--;
-  } else if (valueR == (r == 0 ? 0 : map(r, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX))) {
+  } else if (valueR ==
+             (r == 0 ? 0 : map(r, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX))) {
     ;
   } else {
     valueR++;
   }
   if (valueG > (g == 0 ? 0 : map(r, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX))) {
     valueG--;
-  } else if (valueG == (g == 0 ? 0 : map(r, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX))) {
+  } else if (valueG ==
+             (g == 0 ? 0 : map(r, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX))) {
     ;
   } else {
     valueG++;
   }
   if (valueB > (b == 0 ? 0 : map(r, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX))) {
     valueB--;
-  } else if (valueB == (b == 0 ? 0 : map(r, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX))) {
+  } else if (valueB ==
+             (b == 0 ? 0 : map(r, IN_MIN, IN_MAX, OUT_MIN, OUT_MAX))) {
     ;
   } else {
     valueB++;
