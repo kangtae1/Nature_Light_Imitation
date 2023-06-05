@@ -17,11 +17,7 @@ void isr() { state = true; }
 // Instantiate an object for the nRF24L01 transceiver
 RF24 radio(7, 8); // using pin 7 for the CE pin, and pin 8 for the CSN pin
 
-uint8_t address[][6] = {"1Node", "2Node"}; // Let these addresses be used for
-                                           // the pair
-bool radioNumber = 0; // 0 uses address[0] to transmit, 1 uses address[1] to
-
-bool role = true; // true = TX role, false = RX role
+uint8_t address[7] = "TXNode";
 
 void getRawData_noDelay(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c) {
   *c = tcs.read16(TCS34725_CDATAL);
@@ -52,8 +48,8 @@ void setup(void) {
   }
 
   radio.setPALevel(RF24_PA_LOW); // RF24_PA_MAX is default.
-  radio.setPayloadSize(sizeof("255, 255, 255"));
-  radio.openWritingPipe(address[0]);
+  radio.setPayloadSize(sizeof("65535, 65535, 65535"));
+  radio.openWritingPipe(address);
   radio.stopListening();
 
   // Set persistence filter to generate an interrupt for every RGB Cycle,
@@ -73,7 +69,7 @@ void loop(void) {
   }
 
   char payload[20] = "";
-  sprintf(payload, "%d, %d, %d", r, g, b);
+  sprintf(payload, "%u, %u, %u", r, g, b);
   radio.write(&payload, sizeof(payload));
 
   Serial.println(payload);
