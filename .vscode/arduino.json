@@ -1,6 +1,0 @@
-{
-    "board": "arduino:avr:pro",
-    "sketch": "Arduino/LED_driver/LED_driver.ino",
-    "port": "/dev/tty.usbserial-0001",
-    "configuration": "cpu=16MHzatmega328"
-}
