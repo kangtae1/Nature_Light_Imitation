@@ -35,10 +35,7 @@
             "intelliSenseMode": "gcc-x64",
             "includePath": [
                 "/Users/taewon/Library/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
-                "/Users/taewon/Library/Arduino15/packages/arduino/hardware/avr/1.8.6/variants/standard",
-                "/Users/taewon/Documents/Arduino/libraries/Adafruit_TCS34725",
-                "/Users/taewon/Documents/Arduino/libraries/Adafruit_BusIO",
-                "/Users/taewon/Library/Arduino15/packages/arduino/hardware/avr/1.8.6/libraries/Wire/src",
+                "/Users/taewon/Library/Arduino15/packages/arduino/hardware/avr/1.8.6/variants/eightanaloginputs",
                 "/Users/taewon/Documents/Arduino/libraries/RF24",
                 "/Users/taewon/Library/Arduino15/packages/arduino/hardware/avr/1.8.6/libraries/SPI/src",
                 "/Users/taewon/Library/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include",
@@ -53,7 +50,7 @@
             "defines": [
                 "F_CPU=16000000L",
                 "ARDUINO=10607",
-                "ARDUINO_AVR_UNO",
+                "ARDUINO_AVR_PRO",
                 "ARDUINO_ARCH_AVR",
                 "__DBL_MIN_EXP__=(-125)",
                 "__HQ_FBIT__=15",

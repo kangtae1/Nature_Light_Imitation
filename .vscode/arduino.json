@@ -1,4 +1,6 @@
 {
-    "board": "arduino:avr:uno",
-    "sketch": "Arduino/Sensor_monitor/Sensor_monitor.ino"
+    "board": "arduino:avr:pro",
+    "sketch": "Arduino/LED_driver/LED_driver.ino",
+    "port": "/dev/tty.usbserial-0001",
+    "configuration": "cpu=16MHzatmega328"
 }
