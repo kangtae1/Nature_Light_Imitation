@@ -3,6 +3,8 @@
 #include <SPI.h>
 #include <Wire.h>
 
+#define DATA_SIZE 32
+
 int valueR, valueG, valueB;
 
 // Initialise with specific int time and gain values
@@ -27,28 +29,28 @@ void getRawData_noDelay(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c) {
 }
 
 void setup(void) {
-  pinMode(interruptPin, INPUT_PULLUP); // TCS interrupt output is Active-LOW
-                                       // and Open-Drain
+  pinMode(interruptPin,
+          INPUT_PULLUP); // TCS interrupt output is Active-LOW and Open-Drain
   attachInterrupt(digitalPinToInterrupt(interruptPin), isr, FALLING);
 
-  Serial.begin(115200);
+  // Serial.begin(115200);
 
-  if (tcs.begin()) {
-    Serial.println("Found sensor");
-  } else {
-    Serial.println("No TCS34725 found ... check your connections");
-    while (1)
-      ; // hold in infinite loop
+  // wait until tcs.begin() returns true
+  while (!tcs.begin()) {
+    // Serial.println("No TCS34725 found");
+    delay(1000);
   }
+  // Serial.println("Found TCS34725 sensor");
 
-  if (!radio.begin()) {
-    Serial.println(F("radio hardware is not responding!!"));
-    while (1)
-      ; // hold in infinite loop
+  // wait until radio.begin() returns true
+  while (!radio.begin()) {
+    // Serial.println("No radio module found");
+    delay(1000);
   }
+  // Serial.println("Found radio module");
 
-  radio.setPALevel(RF24_PA_LOW); // RF24_PA_MAX is default.
-  radio.setPayloadSize(sizeof("65535, 65535, 65535"));
+  radio.setPALevel(RF24_PA_MIN); // RF24_PA_MAX is default.
+  radio.setPayloadSize(DATA_SIZE);
   radio.openWritingPipe(address);
   radio.stopListening();
 
@@ -57,22 +59,23 @@ void setup(void) {
   tcs.write8(TCS34725_PERS, TCS34725_PERS_NONE);
   tcs.setInterrupt(true);
 
-  Serial.flush();
+  // Serial.flush();
 }
 
 void loop(void) {
-  uint16_t r, g, b, c;
+  // if interrupt is triggered, read the data and send raw data to the receiver
   if (state) {
+    uint16_t r, g, b, c;
     getRawData_noDelay(&r, &g, &b, &c);
-    tcs.clearInterrupt();
+
+    // send raw data to the receiver
+    char payload[DATA_SIZE];
+    sprintf(payload, "%u, %u, %u, %u", r, g, b, c);
+    radio.write(&payload, sizeof(payload));
+    // Serial.println(payload);
+
     state = false;
+    // clear interrupt flag
+    tcs.clearInterrupt();
   }
-
-  char payload[20] = "";
-  sprintf(payload, "%u, %u, %u", r, g, b);
-  radio.write(&payload, sizeof(payload));
-
-  Serial.println(payload);
-
-  delay(1000);
 }

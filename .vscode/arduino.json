@@ -1,5 +1,6 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "Arduino/Sensor_monitor/Sensor_monitor.ino",
-    "port": "/dev/tty.usbmodem1201"
+    "sketch": "Arduino/LED_driver/LED_driver.ino",
+    "port": "/dev/tty.usbmodem1201",
+    "output": "./build"
 }
